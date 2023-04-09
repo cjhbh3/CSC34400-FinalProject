@@ -1,3 +1,19 @@
-.main {
-    background-color: black;
+:root {
+    --background-color: rgb(52, 58, 64);
+    --primary-color: rgb(166, 231, 242);
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: var(--background-color);
+    height: 100%;
+}
+
+main {
+    text-align: center;
+    background-color: var(--background-color);
+    color: var(--primary-color);
 }
