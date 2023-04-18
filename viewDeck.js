@@ -11,6 +11,11 @@ con.connect(function(err) {
     console.log("Connected!");
     con.query("SELECT * FROM sys.card WHERE CardType = 'Creature'", function(err, result, fields) {
         if (err) throw err;
-        console.log(result);
     });
+    const cards = document.getElementById("cardsResults");
+    cards.innerHTML = '';
+
+    for (i=0; i<result.length;i++) {
+        cards.appendChild(result[i]);
+    }
 });
