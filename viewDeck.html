@@ -3,12 +3,16 @@
     <head>
         <title>Deck Tracker</title>
         <link rel="stylesheet" href="styles/styles.css">
-        <script type="module" src="viewDeck.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script>$('#loading-area').load('viewDeck.php');</script>
     </head>
     <body>
         <main>
             <h1>Current Decks</h1>
             <div id="cardsResults"></div>
+            <div id="loading-area">
+                <p>Loading...</p>
+            </div>
         </main>
     </body>
 </html>
