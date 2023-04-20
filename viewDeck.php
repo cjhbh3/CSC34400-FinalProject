@@ -15,3 +15,5 @@ if ($conn->connect_error)
     die("Could not connect: ".mysqli_connect_error());
 else 
     echo " conneceted!";
+
+?>
