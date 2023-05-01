@@ -10,7 +10,7 @@
             <?php
                 session_start();
 
-                $_SESSION["host"] = "csc34400finalproject-db.cluster-cctp5njo9gyq.us-east-2.rds.amazonaws.com";
+                $_SESSION["host"] = "csc34400finalproject-db-instance-1.cctp5njo9gyq.us-east-2.rds.amazonaws.com";
                 $_SESSION["user"] = "admin";
                 $_SESSION["passw"] = "NewShield19!";
                 $_SESSION["db"] = "sys";
@@ -42,6 +42,12 @@
             </nav>
                 <h1>Deck Tracker</h1>
                 <table id="loading-area">
+                    <ul>
+                        <li>Filter ability in view deck</li>
+                        <li>CSS Clean up</li>
+                        <li>New Logo</li>
+                        <li>Dropdown search for view deck options<li>
+                    </ul>
                     <?php
                         $host = $_SESSION["host"];
                         $user = $_SESSION["user"];
