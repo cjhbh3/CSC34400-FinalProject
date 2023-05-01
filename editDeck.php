@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>View Deck</title>
+        <title>Edit a Deck</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <link rel="stylesheet" href="styles/styles.css">
     </head>
@@ -31,14 +31,26 @@
                     </div>
                 </div>
             </nav>
-            <h1>View Deck</h1>
+            <h1>Edit a Deck</h1>
             <div id="loading-area">
-
-                <form action="" method="post">
-                    Commander Name: <input name="commanderName" type="text" />
+                <form action="" method="post" id="edit">
+                    <label for="commanderName">Commander Name:</label><br/>
+                    <input name="commanderName" type="text" /><br/>
+                    <label for="cardName">Card Name:</label><br/>
+                    <input name="cardName" type="text" /><br/>
+                    <label for="manaValue">Mana Value:</label><br/>
+                    <input name="manaValue" type="number" /><br/>
+                    <label for="colorID">Color Identity:</label><br/>
+                    <input name="colorID" type="text" /><br/>
+                    <label for="cardType">Card Type:</label><br/>
+                    <input name ="cardType" type="text" /><br />
+                    <label for="mode">Add or Delete?</label><br />
+                    <select name="mode" form="edit">
+                        <option value="add">Add</option>
+                        <option value="delete">Delete</option>
+                    </select><br />
                     <input name="submit" type="submit" />
                 </form>
-
                 <br />
                 <table id="loading-area">
                     <?php
@@ -56,28 +68,42 @@
                             die("Could not connect: ".mysqli_connect_error());
 
                         if (isset($_POST["submit"])) {
-                            $tableName = "card";
                             $commanderName = $_POST["commanderName"];
+                            $cardName = $_POST["cardName"];
+                            $manaValue = $_POST["manaValue"];
+                            $colorID = $_POST["colorID"];
+                            $cardType = $_POST["cardType"];
+                            $mode = $_POST["mode"];
 
-                            if (!$stmt = $conn->prepare("select * from card where CommanderName = ?;")) {
-                                die("Issue preparing select statement".htmlspecialchars($conn->error));
+                            if (strcmp($mode, "add") == 0) {
+                                if (!$stmt = $conn->prepare("insert into card values (?,?,?,?,?);")) {
+                                    die("Issue preparing select statement".htmlspecialchars($conn->error));
+                                }
+
+                                $stmt->bind_param("sisss", $cardName, $manaValue, $colorID, $cardType, $commanderName);
+
+                                if (!$stmt->execute()) {
+                                    die("Failure in execute");
+                                }
+
+                                if ($stmt->affected_rows > 0) {
+                                    echo $cardName . " has been added.";
+                                }
                             }
+                            else {
+                                if (!$stmt = $conn->prepare("delete from card where cardName = ? AND commanderName = ?;")) {
+                                    die("Issue preparing select statement".htmlspecialchars($conn->error));
+                                }
 
-                            $stmt->bind_param("s", $commanderName);
+                                $stmt->bind_param("ss", $cardName, $commanderName);
 
-                            if (!$stmt->execute()) {
-                                die("Failure in execute");
-                            }
+                                if (!$stmt->execute()) {
+                                    die("Failure in execute");
+                                }
 
-                            $stmt->bind_result($CardName, $ManaValue, $ColorID, $CardType, $Commander);
-                            
-                            echo "<tr> <th>Card Name</th> <th>Mana Value</th> <th>Color Identity</th> <th>Card Type</th> </tr>";
-
-                            while($stmt->fetch()) {
-                                echo "<tr> <td>".$CardName."</td>".
-                                            "<td>".$ManaValue."</td>".
-                                            "<td>".$ColorID."</td>".
-                                            "<td>".$CardType."</td> </tr>";
+                                if ($stmt->affected_rows > 0) {
+                                    echo $cardName . " has been deleted.";
+                                }
                             }
                         }
                     ?>

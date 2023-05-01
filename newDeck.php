@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>View Deck</title>
+        <title>Create a Deck</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <link rel="stylesheet" href="styles/styles.css">
     </head>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </nav>
-            <h1>View Deck</h1>
+            <h1>Create a Deck</h1>
             <div id="loading-area">
 
                 <form action="" method="post">
@@ -56,10 +56,9 @@
                             die("Could not connect: ".mysqli_connect_error());
 
                         if (isset($_POST["submit"])) {
-                            $tableName = "card";
                             $commanderName = $_POST["commanderName"];
 
-                            if (!$stmt = $conn->prepare("select * from card where CommanderName = ?;")) {
+                            if (!$stmt = $conn->prepare("insert into deck values (?);")) {
                                 die("Issue preparing select statement".htmlspecialchars($conn->error));
                             }
 
@@ -69,15 +68,8 @@
                                 die("Failure in execute");
                             }
 
-                            $stmt->bind_result($CardName, $ManaValue, $ColorID, $CardType, $Commander);
-                            
-                            echo "<tr> <th>Card Name</th> <th>Mana Value</th> <th>Color Identity</th> <th>Card Type</th> </tr>";
-
-                            while($stmt->fetch()) {
-                                echo "<tr> <td>".$CardName."</td>".
-                                            "<td>".$ManaValue."</td>".
-                                            "<td>".$ColorID."</td>".
-                                            "<td>".$CardType."</td> </tr>";
+                            if ($stmt->affected_rows > 0) {
+                                echo $commanderName . " has been added.";
                             }
                         }
                     ?>

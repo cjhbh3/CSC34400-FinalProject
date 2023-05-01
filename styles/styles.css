@@ -1,6 +1,6 @@
 :root {
     --background-color: rgb(52, 58, 64);
-    --primary-color: rgb(252, 35, 35);
+    --primary-color: rgb(255, 96, 96);
 }
 
 html {
@@ -23,6 +23,7 @@ main {
 }
 
 .pageButton {
+    color: black;
     display: flex;
     border-radius: 5px;
     background-color: var(--primary-color);
@@ -31,7 +32,24 @@ main {
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
+    align-items: center;
     text-decoration: none;
     border: none;
     font-size: 50px;
+}
+
+table {
+    table-layout: fixed;
+    width: 800px;
+    border: 1px solid;
+}
+
+th, td {
+    border: 1px solid;
+}
+
+
+#loading-area {
+    margin-left: auto;
+    margin-right: auto;
 }

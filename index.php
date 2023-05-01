@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>View Deck</title>
+        <title>Deck Tracker</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <link rel="stylesheet" href="styles/styles.css">
     </head>
     <body>
         <main>
+            <?php
+                session_start();
+
+                $_SESSION["host"] = "csc34400finalproject-db.cluster-cctp5njo9gyq.us-east-2.rds.amazonaws.com";
+                $_SESSION["user"] = "admin";
+                $_SESSION["passw"] = "NewShield19!";
+                $_SESSION["db"] = "sys";
+                $_SESSION["port"] = 3306;
+            ?>
             <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="index.php"><img src="images/apple-touch-icon-57x57.png" alt="Website Logo" width="60" height="60"></a>
@@ -31,19 +40,9 @@
                     </div>
                 </div>
             </nav>
-            <h1>View Deck</h1>
-            <div id="loading-area">
-
-                <form action="" method="post">
-                    Commander Name: <input name="commanderName" type="text" />
-                    <input name="submit" type="submit" />
-                </form>
-
-                <br />
+                <h1>Deck Tracker</h1>
                 <table id="loading-area">
                     <?php
-                        session_start();
-
                         $host = $_SESSION["host"];
                         $user = $_SESSION["user"];
                         $pass = $_SESSION["passw"];
@@ -55,34 +54,24 @@
                         if ($conn->connect_error)
                             die("Could not connect: ".mysqli_connect_error());
 
-                        if (isset($_POST["submit"])) {
-                            $tableName = "card";
-                            $commanderName = $_POST["commanderName"];
 
-                            if (!$stmt = $conn->prepare("select * from card where CommanderName = ?;")) {
-                                die("Issue preparing select statement".htmlspecialchars($conn->error));
-                            }
+                        if (!$stmt = $conn->prepare("select * from deck;")) {
+                            die("Issue preparing select statement".htmlspecialchars($conn->error));
+                        }
 
-                            $stmt->bind_param("s", $commanderName);
+                        if (!$stmt->execute()) {
+                            die("Failure in execute");
+                        }
 
-                            if (!$stmt->execute()) {
-                                die("Failure in execute");
-                            }
+                        $stmt->bind_result($CommanderName);
+                        
+                        echo "<tr> <th>Commander Name</th> </tr>";
 
-                            $stmt->bind_result($CardName, $ManaValue, $ColorID, $CardType, $Commander);
-                            
-                            echo "<tr> <th>Card Name</th> <th>Mana Value</th> <th>Color Identity</th> <th>Card Type</th> </tr>";
-
-                            while($stmt->fetch()) {
-                                echo "<tr> <td>".$CardName."</td>".
-                                            "<td>".$ManaValue."</td>".
-                                            "<td>".$ColorID."</td>".
-                                            "<td>".$CardType."</td> </tr>";
-                            }
+                        while($stmt->fetch()) {
+                            echo "<tr> <td>".$CommanderName."</td> </tr>";
                         }
                     ?>
                 </table>
-            </div>
         </main>
     </body>
 </html>
