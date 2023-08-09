@@ -8,13 +8,21 @@
     <body>
         <main>
             <?php
+            /*
+
+                *****
+                    I have removed the DB connection values for two reasons:
+                        1. Sensentive information
+                        2. AWS RDS has been taken down
+                *****
                 session_start();
 
-                $_SESSION["host"] = "csc34400finalproject-db-instance-1.cctp5njo9gyq.us-east-2.rds.amazonaws.com";
-                $_SESSION["user"] = "admin";
-                $_SESSION["passw"] = "NewShield19!";
-                $_SESSION["db"] = "sys";
-                $_SESSION["port"] = 3306;
+                $_SESSION["host"] =
+                $_SESSION["user"] =
+                $_SESSION["passw"] =
+                $_SESSION["db"] = 
+                $_SESSION["port"] =
+            */
             ?>
             <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <div class="container-fluid">
